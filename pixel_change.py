@@ -187,33 +187,22 @@ def view_image():
 
 from PIL import Image
 
-def pixel_dec():
-    txt2 = tk.Entry(width=100)
-    txt2.place(x=90, y=600)
-    for n in filenames:
-        if suspend_flag == 1:
-            while(1):
-                time.sleep(1)
-                if suspend_flag == 0:
-                    break
+def pixel_dec(img2):
+    image2 = img2.convert('RGB')
+    size2 = image2.size
 
-        image1 = Image.open(n)
-        image2 = image1.convert('RGB')
-        size2 = image2.size
+    image3 = Image.new('RGBA',size2)
 
-        image3 = Image.new('RGBA',size2)
+        
+    width, height = img2.size
 
-        width, height = image1.size
-
-        for x in range(width):
-            if(x%8!=0):#８分の１は描画しない
-                for y in range(height):
-                    if(y%8!=0):#８分の１は描画しない
-                        r, g, b = image1.getpixel((x, y))
-                        image3.putpixel((x, y), (r, g, b))
-
-        image3.show()
-
+    for x in range(width):
+        if(x%8!=0):#８分の１は描画しない
+            for y in range(height):
+                if(y%8!=0):#８分の１は描画しない
+                    r, g, b = img2.getpixel((x, y))
+                    image3.putpixel((x, y), (r, g, b))
+    return image3
 
 def change_image():
     txt2 = tk.Entry(width=100)
@@ -226,22 +215,8 @@ def change_image():
                     break
         img2 = Image.open(n)
 
-        image2 = img2.convert('RGB')
-        size2 = image2.size
+        img2 = pixel_dec(img2)
 
-        image3 = Image.new('RGBA',size2)
-
-        
-        width, height = img2.size
-
-        for x in range(width):
-            if(x%8!=0):#８分の１は描画しない
-                for y in range(height):
-                    if(y%8!=0):#８分の１は描画しない
-                        r, g, b = img2.getpixel((x, y))
-                        image3.putpixel((x, y), (r, g, b))
-
-        img2=image3
         before_x, before_y = img2.size[0], img2.size[1]
         x = int(round(float(300 / float(before_y) * float(before_x))))
         y = 300
