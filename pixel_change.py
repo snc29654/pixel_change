@@ -215,6 +215,52 @@ def pixel_dec():
         image3.show()
 
 
+def change_image():
+    txt2 = tk.Entry(width=100)
+    txt2.place(x=90, y=600)
+    for n in filenames:
+        if suspend_flag == 1:
+            while(1):
+                time.sleep(1)
+                if suspend_flag == 0:
+                    break
+        img2 = Image.open(n)
+
+        image2 = img2.convert('RGB')
+        size2 = image2.size
+
+        image3 = Image.new('RGBA',size2)
+
+        
+        width, height = img2.size
+
+        for x in range(width):
+            if(x%8!=0):#８分の１は描画しない
+                for y in range(height):
+                    if(y%8!=0):#８分の１は描画しない
+                        r, g, b = img2.getpixel((x, y))
+                        image3.putpixel((x, y), (r, g, b))
+
+        img2=image3
+        before_x, before_y = img2.size[0], img2.size[1]
+        x = int(round(float(300 / float(before_y) * float(before_x))))
+        y = 300
+        img2.thumbnail((x*float(sizerate), y*float(sizerate)), Image.ANTIALIAS)
+        #img2 = img2.resize((900,600),Image.ANTIALIAS)
+        img2 = ImageTk.PhotoImage(img2)
+        canvas = tkinter.Canvas(bg = "white", width=900, height=600)
+        canvas.place(x=0, y=0)
+        item = canvas.create_image(30, 30, image=img2, anchor=tkinter.NW)
+        print("size")
+        print(sizerate)
+        print("int")
+        print(interval)
+        int_interval=float(interval)
+        time.sleep(int_interval) 
+        canvas.itemconfig(item,image=img2)
+        txt2.delete(0, tk.END)
+        txt2.insert(tk.END,n)
+
 
 
 
@@ -246,5 +292,5 @@ thread1 = threading.Thread(target=view_image)
 thread1.start()
 
 #jpgの変更処理
-thread2 = threading.Thread(target=pixel_dec)
+thread2 = threading.Thread(target=change_image)
 thread2.start()
