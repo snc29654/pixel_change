@@ -141,7 +141,8 @@ def initial():
 
 def inc_mabiki():
     global mabiki_rate
-    mabiki_rate = mabiki_rate - 1 
+    if mabiki_rate > 2:
+        mabiki_rate = mabiki_rate - 1 
 
 def dec_mabiki():
     global mabiki_rate
