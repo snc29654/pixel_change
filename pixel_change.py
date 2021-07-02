@@ -22,7 +22,7 @@ from tkinter import font
 interval = 1.0
 sizerate = 1.0
 filenames =[]
-
+mabiki_rate = 8
 
 #最初の画面のクラス
 class image_gui():  
@@ -139,6 +139,13 @@ def initial():
     thread3 = threading.Thread(target=change_image)
     thread3.start()
 
+def inc_mabiki():
+    global mabiki_rate
+    mabiki_rate = mabiki_rate - 1 
+
+def dec_mabiki():
+    global mabiki_rate
+    mabiki_rate = mabiki_rate + 1 
 
 
 def view_image():
@@ -180,6 +187,13 @@ def view_image():
     button11.grid(row=0, column=1)  
     button11.place(x=930, y=260) 
 
+    button12 = tk.Button(root, text = '間引大', command=inc_mabiki)
+    button12.grid(row=0, column=1)  
+    button12.place(x=930, y=290) 
+
+    button12 = tk.Button(root, text = '間引小', command=dec_mabiki)
+    button12.grid(row=0, column=1)  
+    button12.place(x=930, y=320) 
 
     root.mainloop()
  
@@ -197,9 +211,9 @@ def pixel_dec(img2):
     width, height = img2.size
 
     for x in range(width):
-        if(x%8!=0):#８分の１は描画しない
+        if(x%mabiki_rate!=0):#８分の１は描画しない
             for y in range(height):
-                if(y%8!=0):#８分の１は描画しない
+                if(y%mabiki_rate!=0):#８分の１は描画しない
                     r, g, b = img2.getpixel((x, y))
                     image3.putpixel((x, y), (r, g, b))
     return image3
